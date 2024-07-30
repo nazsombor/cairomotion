@@ -1,0 +1,7 @@
+#include <iostream>
+#include "CairoMotion.h"
+
+int main(int argc, char **argv) {
+    auto app = Gtk::Application::create("hu.azsn.cairomotion");
+    return app->make_window_and_run<CairoMotion>(argc, argv);
+}
