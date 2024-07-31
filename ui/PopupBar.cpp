@@ -8,12 +8,16 @@ void PopupBar::onDraw(const Cairo::RefPtr<Cairo::Context> &cr) {
 
     switch(side) {
         case LEFT:
-            if (isOpen) {
-                drawBar(cr, x, y, openSize, height);
-                drawSpaceChild(cr, x + openSize, y, width - openSize, height);
+            if (hidden) {
+                drawSpaceChild(cr, x, y, width, height);
             } else {
-                drawBar(cr, x, y, closedSize, height);
-                drawSpaceChild(cr, x + closedSize, y, width - closedSize, height);
+                if (isOpen) {
+                    drawBar(cr, x, y, openSize, height);
+                    drawSpaceChild(cr, x + openSize, y, width - openSize, height);
+                } else {
+                    drawBar(cr, x, y, closedSize, height);
+                    drawSpaceChild(cr, x + closedSize, y, width - closedSize, height);
+                }
             }
             break;
         case RIGHT:
@@ -21,12 +25,16 @@ void PopupBar::onDraw(const Cairo::RefPtr<Cairo::Context> &cr) {
         case TOP:
             break;
         case BOTTOM:
-            if (isOpen) {
-                drawBar(cr, x, height - openSize, width, openSize);
-                drawSpaceChild(cr, x, y, width, height - openSize);
+            if (hidden) {
+                drawSpaceChild(cr, x, y, width, height);
             } else {
-                drawBar(cr, x, height - closedSize, width, closedSize);
-                drawSpaceChild(cr, x, y, width, height - closedSize);
+                if (isOpen) {
+                    drawBar(cr, x, height - openSize, width, openSize);
+                    drawSpaceChild(cr, x, y, width, height - openSize);
+                } else {
+                    drawBar(cr, x, height - closedSize, width, closedSize);
+                    drawSpaceChild(cr, x, y, width, height - closedSize);
+                }
             }
             break;
     }
@@ -50,7 +58,6 @@ void PopupBar::drawBar(const Cairo::RefPtr<Cairo::Context> &cr, int x, int y, in
 
 void PopupBar::onStylusMotion(gdouble pointerX, gdouble pointerY) {
     if (barContains(pointerX, pointerY)) {
-        std::cout << "Contains" << std::endl;
         if (!isOpen) {
             queueDraw();
         }
@@ -84,4 +91,16 @@ void PopupBar::setSpaceChild(ui::Widget &child) {
     spaceChild = &child;
     spaceChild->area = area;
 
+}
+
+void PopupBar::onRightClick(double x, double y) {
+    if (toggleHidBarOnRightClick) {
+        hidden = !hidden;
+        std::cout << "Right click" << std::endl;
+        if (dynamic_cast<PopupBar*>(spaceChild) != nullptr) {
+            spaceChild->onRightClick(x, y);
+            std::cout << "Child" << std::endl;
+        }
+        queueDraw();
+    }
 }

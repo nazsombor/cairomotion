@@ -15,3 +15,4 @@ void ui::Widget::allocateSize(int x, int y, int width, int height) {
 void ui::Widget::queueDraw() {
     area->queue_draw();
 }
+

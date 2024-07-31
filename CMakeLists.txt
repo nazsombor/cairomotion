@@ -19,6 +19,8 @@ add_executable(cairomotion main.cpp
         ui/PopupBar.h
         ui/Window.cpp
         ui/Window.h
+        ui/Canvas.cpp
+        ui/Canvas.h
 )
 
 target_link_libraries(cairomotion ${GTKMM_LIBRARIES})

@@ -8,10 +8,12 @@
 
 #include "ui/PopupBar.h"
 #include "ui/Window.h"
+#include "ui/Canvas.h"
 
 class CairoMotion : public ui::Window {
     PopupBar timelinePopupBar;
     PopupBar toolsPopupBar;
+    Canvas canvas;
 public:
     CairoMotion();
 

@@ -18,6 +18,8 @@ namespace ui {
 
         virtual void onStylusMotion(gdouble x, gdouble y) = 0;
 
+        virtual void onRightClick(double x, double y) = 0;
+
         void allocateSize(int x, int y, int width, int height);
 
         void queueDraw();

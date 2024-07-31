@@ -18,6 +18,9 @@ public:
     int openSize = 300;
     int closedSize = 30;
 
+    bool toggleHidBarOnRightClick = true;
+    bool hidden = false;
+
 public:
     void onDraw(const Cairo::RefPtr<Cairo::Context> &cr) override;
 
@@ -33,6 +36,8 @@ public:
     bool barContains(gdouble pointerX, gdouble pointerY);
 
     void setSpaceChild(ui::Widget &child);
+
+    void onRightClick(double x, double y) override;
 };
 
 

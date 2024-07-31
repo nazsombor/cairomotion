@@ -38,6 +38,9 @@ namespace ui {
         void enableFullscreenOnKey(int key);
 
         void setChild(ui::Widget &widget);
+
+        void onRightClick(int type, double x, double y);
+
     };
 }
 

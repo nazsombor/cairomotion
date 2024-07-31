@@ -23,8 +23,14 @@ ui::Window::Window(std::string title, int width, int height) {
     auto eventControllerMotion = Gtk::EventControllerMotion::create();
     eventControllerMotion->signal_motion().connect(sigc::mem_fun(*this, &Window::onStylusMotion));
 
+    auto gestureClick = Gtk::GestureClick::create();
+
+    gestureClick->signal_released().connect(sigc::mem_fun(*this, &Window::onRightClick));
+    gestureClick->set_button(3);
+
     area.add_controller(gestureStylus);
     area.add_controller(eventControllerMotion);
+    area.add_controller(gestureClick);
     area.set_draw_func(sigc::mem_fun(*this, &Window::onDraw));
 }
 
@@ -66,4 +72,8 @@ void ui::Window::enableFullscreenOnKey(int key) {
 void ui::Window::setChild(ui::Widget &widget) {
     child = &widget;
     child->area = &area;
+}
+
+void ui::Window::onRightClick(int type, double x, double y) {
+    child->onRightClick(x, y);
 }
