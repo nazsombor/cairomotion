@@ -8,7 +8,7 @@ ui::Window::Window(std::string title, int width, int height) {
     set_title(std::move(title));
     set_default_size(width, height);
     set_child(area);
-    set_cursor("none");
+    //set_cursor("none");
 
     auto eventControllerKey = Gtk::EventControllerKey::create();
     eventControllerKey->signal_key_released().connect(sigc::mem_fun(*this, &Window::onKeyRelease));
@@ -42,7 +42,8 @@ void ui::Window::onKeyRelease(gint key, gint _, Gdk::ModifierType modifierType) 
 }
 
 void ui::Window::onDraw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height) {
-    child->onDraw(cr, width, height);
+    child->allocateSize(0, 0, width, height);
+    child->onDraw(cr);
 }
 
 void ui::Window::onStylusDown(double x, double y) {
@@ -50,8 +51,7 @@ void ui::Window::onStylusDown(double x, double y) {
 }
 
 void ui::Window::onStylusMotion(double x, double y) {
-    std::cout << x << " " << std::endl;
-    child->onMouseMotion(x, y);
+    child->onStylusMotion(x, y);
 }
 
 void ui::Window::onStylusUp(double x, double y) {
@@ -65,4 +65,5 @@ void ui::Window::enableFullscreenOnKey(int key) {
 
 void ui::Window::setChild(ui::Widget &widget) {
     child = &widget;
+    child->area = &area;
 }

@@ -7,14 +7,23 @@
 
 
 #include <gtkmm.h>
+#include <iostream>
 
 namespace ui {
     class Widget {
-
     public:
-        virtual void onDraw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height) = 0;
+        Gtk::DrawingArea *area;
 
-        virtual void onMouseMotion(gdouble x, gdouble y) = 0;
+        virtual void onDraw(const Cairo::RefPtr<Cairo::Context> &cr) = 0;
+
+        virtual void onStylusMotion(gdouble x, gdouble y) = 0;
+
+        void allocateSize(int x, int y, int width, int height);
+
+        void queueDraw();
+
+    protected:
+        int x = 0, y = 0, width = 0, height = 0;
     };
 }
 

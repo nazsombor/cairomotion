@@ -10,17 +10,29 @@
 
 class PopupBar : public ui::Widget {
     bool isOpen = false;
+
 public:
 
     enum Side {LEFT, RIGHT, TOP, BOTTOM};
     Side side = BOTTOM;
     int openSize = 300;
-    int barX, barY, barWidth, barHeight;
+    int closedSize = 30;
 
 public:
-    void onDraw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height) override;
+    void onDraw(const Cairo::RefPtr<Cairo::Context> &cr) override;
 
-    void onMouseMotion(gdouble x, gdouble y) override;
+    void onStylusMotion(gdouble x, gdouble y) override;
+
+    ui::Widget *spaceChild = nullptr;
+    ui::Widget *barChild = nullptr;
+
+    void drawBar(const Cairo::RefPtr<Cairo::Context> &cr, int x, int y, int width, int height) const;
+
+    void drawSpaceChild(const Cairo::RefPtr<Cairo::Context> &cr, int x, int y, int width, int height);
+
+    bool barContains(gdouble pointerX, gdouble pointerY);
+
+    void setSpaceChild(ui::Widget &child);
 };
 
 
