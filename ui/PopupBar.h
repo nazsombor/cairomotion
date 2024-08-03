@@ -24,7 +24,13 @@ public:
 public:
     void onDraw(const Cairo::RefPtr<Cairo::Context> &cr) override;
 
+    void onStylusDown(double x, double y) override;
+
     void onStylusMotion(gdouble x, gdouble y) override;
+
+    void onStylusUp(double x, double y) override;
+
+    void onMouseMotion(double x, double y) override;
 
     ui::Widget *spaceChild = nullptr;
     ui::Widget *barChild = nullptr;
@@ -34,6 +40,8 @@ public:
     void drawSpaceChild(const Cairo::RefPtr<Cairo::Context> &cr, int x, int y, int width, int height);
 
     bool barContains(gdouble pointerX, gdouble pointerY);
+
+    bool spaceChildContains(gdouble pointerX, gdouble pointerY);
 
     void setSpaceChild(ui::Widget &child);
 

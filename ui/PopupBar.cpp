@@ -56,19 +56,39 @@ void PopupBar::drawBar(const Cairo::RefPtr<Cairo::Context> &cr, int x, int y, in
     cr->stroke();
 }
 
+void PopupBar::onStylusDown(double x, double y) {
+    if (barContains(x, y)) {
+
+    } else if (spaceChildContains(x, y)) {
+        if (spaceChild) {
+            spaceChild->onStylusDown(x, y);
+        }
+    }
+}
+
 void PopupBar::onStylusMotion(gdouble pointerX, gdouble pointerY) {
     if (barContains(pointerX, pointerY)) {
         if (!isOpen) {
             queueDraw();
         }
         isOpen = true;
-    } else {
+    } else if (spaceChildContains(pointerX, pointerY)){
         if (isOpen) {
             queueDraw();
         }
         isOpen = false;
         if (spaceChild)
             spaceChild->onStylusMotion(pointerX, pointerY);
+    }
+}
+
+void PopupBar::onStylusUp(double x, double y) {
+    if (barContains(x, y)) {
+
+    } else if (spaceChildContains(x, y)) {
+        if (spaceChild) {
+            spaceChild->onStylusUp(x, y);
+        }
     }
 }
 
@@ -96,11 +116,40 @@ void PopupBar::setSpaceChild(ui::Widget &child) {
 void PopupBar::onRightClick(double x, double y) {
     if (toggleHidBarOnRightClick) {
         hidden = !hidden;
-        std::cout << "Right click" << std::endl;
         if (dynamic_cast<PopupBar*>(spaceChild) != nullptr) {
             spaceChild->onRightClick(x, y);
-            std::cout << "Child" << std::endl;
         }
         queueDraw();
+    }
+}
+
+bool PopupBar::spaceChildContains(gdouble pointerX, gdouble pointerY) {
+    int size = isOpen ? openSize : closedSize;
+    switch(side) {
+        case LEFT:
+            return (pointerX > x + size && pointerX < x + width) && (pointerY > y && pointerY < y + height);
+        case RIGHT:
+            break;
+        case TOP:
+            break;
+        case BOTTOM:
+            return (pointerX > x && pointerX < x + width) && (pointerY > y && pointerY < y + height - size);
+    }
+    return false;
+}
+
+void PopupBar::onMouseMotion(double pointerX, double pointerY) {
+    if (barContains(pointerX, pointerY)) {
+        if (!isOpen) {
+            queueDraw();
+        }
+        isOpen = true;
+    } else if (spaceChildContains(pointerX, pointerY)){
+        if (isOpen) {
+            queueDraw();
+        }
+        isOpen = false;
+        if (spaceChild)
+            spaceChild->onMouseMotion(pointerX, pointerY);
     }
 }

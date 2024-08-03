@@ -14,6 +14,8 @@ namespace ui {
     public:
         Gtk::DrawingArea *area;
 
+        int x = 0, y = 0, width = 0, height = 0;
+
         virtual void onDraw(const Cairo::RefPtr<Cairo::Context> &cr) = 0;
 
         virtual void onStylusMotion(gdouble x, gdouble y) = 0;
@@ -24,8 +26,11 @@ namespace ui {
 
         void queueDraw();
 
-    protected:
-        int x = 0, y = 0, width = 0, height = 0;
+        virtual void onStylusDown(double x, double y) = 0;
+
+        virtual void onStylusUp(double x, double y) = 0;
+
+        virtual void onMouseMotion(double x, double y) = 0;
     };
 }
 

@@ -14,17 +14,15 @@ ui::Window::Window(std::string title, int width, int height) {
     eventControllerKey->signal_key_released().connect(sigc::mem_fun(*this, &Window::onKeyRelease));
     add_controller(eventControllerKey);
 
-    auto gestureStylus = Gtk::GestureStylus::create();
     gestureStylus = Gtk::GestureStylus::create();
     gestureStylus->signal_down().connect(sigc::mem_fun(*this, &Window::onStylusDown));
     gestureStylus->signal_motion().connect(sigc::mem_fun(*this, &Window::onStylusMotion));
     gestureStylus->signal_up().connect(sigc::mem_fun(*this, &Window::onStylusUp));
 
     auto eventControllerMotion = Gtk::EventControllerMotion::create();
-    eventControllerMotion->signal_motion().connect(sigc::mem_fun(*this, &Window::onStylusMotion));
+    eventControllerMotion->signal_motion().connect(sigc::mem_fun(*this, &Window::onMouseMotion));
 
     auto gestureClick = Gtk::GestureClick::create();
-
     gestureClick->signal_released().connect(sigc::mem_fun(*this, &Window::onRightClick));
     gestureClick->set_button(3);
 
@@ -35,7 +33,6 @@ ui::Window::Window(std::string title, int width, int height) {
 }
 
 void ui::Window::onKeyRelease(gint key, gint _, Gdk::ModifierType modifierType) {
-    std::cout << key << std::endl;
     if (fullscreenEnabledOnKey && key == fullscreenKey) {
         if (isFullscreen) {
             unfullscreen();
@@ -53,7 +50,7 @@ void ui::Window::onDraw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
 }
 
 void ui::Window::onStylusDown(double x, double y) {
-
+    child->onStylusDown(x, y);
 }
 
 void ui::Window::onStylusMotion(double x, double y) {
@@ -61,7 +58,7 @@ void ui::Window::onStylusMotion(double x, double y) {
 }
 
 void ui::Window::onStylusUp(double x, double y) {
-
+    child->onStylusUp(x, y);
 }
 
 void ui::Window::enableFullscreenOnKey(int key) {
@@ -76,4 +73,8 @@ void ui::Window::setChild(ui::Widget &widget) {
 
 void ui::Window::onRightClick(int type, double x, double y) {
     child->onRightClick(x, y);
+}
+
+void ui::Window::onMouseMotion(double x, double y) {
+    child->onMouseMotion(x, y);
 }

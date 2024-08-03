@@ -14,7 +14,15 @@ CairoMotion::CairoMotion() : ui::Window("Cairo Motion", 1600, 900) {
 
     toolsPopupBar.side = PopupBar::Side::LEFT;
     toolsPopupBar.openSize = 500;
-    toolsPopupBar.setSpaceChild(canvas);
+    toolsPopupBar.setSpaceChild(canvasCenterContainer);
+
+    canvasCenterContainer.setChild(canvas);
+    canvasCenterContainer.childOptimalWidth = canvas.canvasWidth = 1920;
+    canvasCenterContainer.childOptimalHeight = canvas.canvasHeight = 1080;
+
+    canvas.gestureStylus = &gestureStylus;
+    canvas.drawings = &drawings;
+
 
 }
 

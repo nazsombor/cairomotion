@@ -33,6 +33,8 @@ namespace ui {
 
         void onStylusMotion(double x, double y);
 
+        void onMouseMotion(double x, double y);
+
         void onStylusUp(double x, double y);
 
         void enableFullscreenOnKey(int key);
@@ -41,6 +43,7 @@ namespace ui {
 
         void onRightClick(int type, double x, double y);
 
+        Glib::RefPtr<Gtk::GestureStylus> gestureStylus;
     };
 }
 
