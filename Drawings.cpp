@@ -9,9 +9,11 @@ Drawings::Drawings() {
 }
 
 void Drawings::onDraw(const std::shared_ptr<Cairo::Context> &cr, int x, int y, int width, int height) {
-    cr->set_source(surface, x, y);
-    cr->rectangle(x, y, width, height);
-    cr->fill();
+    auto w = (double) width / 1920;
+    auto h = (double) height / 1080;
+    cr->scale(w, h);
+    cr->set_source(surface, x / w, y /h);
+    cr->paint();
 }
 
 void Drawings::pen(std::vector<ink::stroke_model::Result> &stroke) {

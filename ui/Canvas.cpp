@@ -33,9 +33,10 @@ void Canvas::onStylusDown(double x, double y) {
     );
 
     ink::stroke_model::Input input;
-
+    auto correctedX = ((float) x - this->x) / (width / 1920.0f);
+    auto correctedY = ((float) y - this->y) / (height / 1080.0f);
+    input.position = {correctedX, correctedY};
     input.event_type = ink::stroke_model::Input::EventType::kDown;
-    input.position = {(float) x - this->x, (float) y - this->y};
     input.time = ink::stroke_model::Time{0};
     input.pressure = (*gestureStylus)->get_axis(Gdk::AxisUse::PRESSURE).value();
     input.orientation = M_PI;
@@ -56,8 +57,9 @@ void Canvas::onStylusMotion(gdouble x, gdouble y) {
     ink::stroke_model::Input input;
 
     input.event_type = ink::stroke_model::Input::EventType::kMove;
-    input.position = {(float) x - this->x, (float) y - this->y};
-    input.time = ink::stroke_model::Time{(double) t};
+    auto correctedX = ((float) x - this->x) / (width / 1920.0f);
+    auto correctedY = ((float) y - this->y) / (height / 1080.0f);
+    input.position = {correctedX, correctedY};input.time = ink::stroke_model::Time{(double) t};
     input.pressure = (*gestureStylus)->get_axis(Gdk::AxisUse::PRESSURE).value();
     input.orientation = M_PI;
     input.tilt = 0;
@@ -77,8 +79,9 @@ void Canvas::onStylusUp(double x, double y) {
     ink::stroke_model::Input input;
 
     input.event_type = ink::stroke_model::Input::EventType::kUp;
-    input.position = {(float) x - this->x, (float) y - this->y};
-    input.time = ink::stroke_model::Time{(double) t};
+    auto correctedX = ((float) x - this->x) / (width / 1920.0f);
+    auto correctedY = ((float) y - this->y) / (height / 1080.0f);
+    input.position = {correctedX, correctedY};input.time = ink::stroke_model::Time{(double) t};
     input.pressure = (*gestureStylus)->get_axis(Gdk::AxisUse::PRESSURE).value();
     input.orientation = M_PI;
     input.tilt = 0;
