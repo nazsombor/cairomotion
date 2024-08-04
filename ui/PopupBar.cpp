@@ -93,6 +93,10 @@ void PopupBar::onStylusUp(double x, double y) {
 }
 
 bool PopupBar::barContains(gdouble pointerX, gdouble pointerY) {
+    if (hidden) {
+        return false;
+    }
+
     int size = isOpen ? openSize : closedSize;
     switch(side) {
         case LEFT:
@@ -124,6 +128,10 @@ void PopupBar::onRightClick(double x, double y) {
 }
 
 bool PopupBar::spaceChildContains(gdouble pointerX, gdouble pointerY) {
+    if (hidden) {
+        return true;
+    }
+
     int size = isOpen ? openSize : closedSize;
     switch(side) {
         case LEFT:
